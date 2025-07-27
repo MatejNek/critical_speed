@@ -79,6 +79,25 @@ def main():
             with col3:
                 st.metric("Critical Speed Pace", format_pace(cs_minkm))
             
+            # Calculate zone boundaries (in min/km)
+            zone_boundaries = [0.40, 0.60, 0.75, 0.85, 0.95, 1.05, 1.15]
+            # Each value is a multiplier of critical speed (e.g., 1.60 means 160% of CS)
+            # We'll calculate the pace for each boundary
+            pace_boundaries = [format_pace(cs_minkm / pct) for pct in zone_boundaries]
+
+            # Define zones
+            zones = [
+                {"Zone": "Z1", "Pace Range": f"< {pace_boundaries[0]}"},
+                {"Zone": "Z2", "Pace Range": f"{pace_boundaries[0]} - {pace_boundaries[1]}"},
+                {"Zone": "Z3", "Pace Range": f"{pace_boundaries[1]} - {pace_boundaries[2]}"},
+                {"Zone": "Z4", "Pace Range": f"{pace_boundaries[2]} - {pace_boundaries[3]}"},
+                {"Zone": "Z5", "Pace Range": f"{pace_boundaries[3]} - {pace_boundaries[4]}"},
+                {"Zone": "Z6", "Pace Range": f"{pace_boundaries[5]} - {pace_boundaries[6]}"},
+            ]
+
+            st.subheader("Training Zones (by Critical Speed %)")
+            st.table(zones)
+
             # Additional information
             st.subheader("Interpretation")
             st.write(f"""
